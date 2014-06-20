@@ -1,5 +1,4 @@
 require 'aws-sdk'
-require 'yaml'
 
 module Alephant
   module Harness
