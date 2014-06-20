@@ -20,7 +20,6 @@ module Alephant
             begin
               client.delete_table({ :table_name => table_name })
             rescue Exception => e
-              puts "Rasing exception: #{e.message}"
               #If table doesn't exist fail silently
             end
           end
