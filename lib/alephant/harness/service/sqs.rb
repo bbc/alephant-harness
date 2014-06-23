@@ -17,6 +17,12 @@ module Alephant
           client.queues.named(queue_name)
         end
 
+        def self.exists?(queue_name)
+          if get(queue_name)
+            yield
+          end
+        end
+
         def self.delete(queue_name)
           client.queues.named(queue_name).delete
         end
