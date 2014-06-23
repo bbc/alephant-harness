@@ -13,6 +13,14 @@ module Alephant
           client.queues.create queue_name
         end
 
+        def self.get(queue_name)
+          client.queues.named(queue_name)
+        end
+
+        def self.delete(queue_name)
+          client.queues.named(queue_name).delete
+        end
+
       end
     end
   end

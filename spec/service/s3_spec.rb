@@ -81,11 +81,6 @@ describe Alephant::Harness::Service::S3 do
 
       end
     end
-
-
-
-
   end
-
 
 end
