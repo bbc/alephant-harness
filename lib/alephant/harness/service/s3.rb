@@ -37,6 +37,12 @@ module Alephant
           get_object(id, object_id).delete
         end
 
+        def self.exists?(id, object_id)
+          if get_object(id, object_id)
+            yield
+          end
+        end
+
       end
     end
   end
