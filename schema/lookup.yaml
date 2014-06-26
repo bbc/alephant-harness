@@ -1,12 +1,14 @@
 :attribute_definitions:
-  :attribute_name: 'key'
-  :attribute_type: 'S'
+  - 
+    :attribute_name: 'key'
+    :attribute_type: 'S'
 
 :table_name: ''
 
 :key_schema:
-  :attribute_name: 'key'
-  :key_type: 'HASH'
+  - 
+    :attribute_name: 'key'
+    :key_type: 'HASH'
 
 :provisioned_throughput:
   :read_capacity_units: 10
