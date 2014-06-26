@@ -1,21 +1,26 @@
+require "alephant/harness/service/dynamo_db"
+require "alephant/harness/service/s3"
+require "alephant/harness/service/sqs"
+require "alephant/harness/aws"
+
 module Alephant
   module Harness
     module Setup
- 
+
       def self.configure(opts = {}, env = nil)
         AWS.configure(env)
- 
+
         queue_name = opts[:sqs_queue_url]
         bucket     = opts[:bucket_id]
         tables     = {
           :lookup    => opts[:lookup_table_name],
           :sequencer => opts[:sequencer_table_name],
         }
- 
+
         recreate_sqs queue_name
 
         recreate_s3 bucket
- 
+
         recreate_dynamo_db tables
       end
 
@@ -25,7 +30,7 @@ module Alephant
         end
 
         Service::SQS.create(queue_name)
-      end 
+      end
 
       def self.recreate_s3(bucket)
         Service::S3.exists?(bucket) do
@@ -39,10 +44,6 @@ module Alephant
         Service::DynamoDB.remove(tables.values)
 
         tables.each do |schema_name, table_name|
-          Service::DynamoDB.exists?(table_name) do
-            Service::DynamoDB.delete(table_name)
-          end
-
           Service::DynamoDB.create(table_name, schema_name)
         end
       end
@@ -50,3 +51,5 @@ module Alephant
     end
   end
 end
+
+binding.pry

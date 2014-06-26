@@ -7,6 +7,7 @@ module Alephant
       def self.configure(environment = nil)
 
         environment = environment.nil? ? ENV : environment
+
         use_ssl = (environment['AWS_USE_SSL'] && environment['AWS_USE_SSL'] == 'true')
         environment['AWS_USE_SSL'] = use_ssl.nil? ? ::AWS.config.use_ssl : use_ssl
 
