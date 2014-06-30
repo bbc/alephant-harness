@@ -6,21 +6,9 @@ module Alephant
 
       def self.configure(environment = nil)
 
-        #environment = environment.nil? ? ENV : environment
         environment ||= ENV
 
-        #use_ssl = (environment['AWS_USE_SSL'] && environment['AWS_USE_SSL'] == 'true')
-        #environment['AWS_USE_SSL'] = use_ssl.nil? ? ::AWS.config.use_ssl : use_ssl
-
-        environment['AWS_USE_SSL'] = 'false'#::AWS.config.use_ssl.to_s unless environment['AWS_USE_SSL'] == 'true'
-
-
         ::AWS.config(aws_properties_from(environment))
-
-        ::AWS.config(:use_ssl => false)
-
-        require "pry"
-        binding.pry
       end
 
       def self.aws_properties_from(env)
@@ -36,12 +24,10 @@ module Alephant
       end
 
       def self.sanitise_value(value)
-        require "pry"
-
-        value.tap do |v|
-          if %w[ true false ].include?(v)
-            v = v == 'true' ? true : false
-          end
+        if %w[ true false ].include?(value)
+          value == 'true'
+        else
+          value
         end
       end
 
