@@ -1,0 +1,21 @@
+:attribute_definitions:
+  -
+    :attribute_name: 'batch_version'
+    :attribute_type: 'N'
+  -
+    :attribute_name: 'component_key'
+    :attribute_type: 'S'
+    
+:table_name: ''
+
+:key_schema:
+  -
+    :attribute_name: 'component_key'
+    :key_type: 'HASH'
+  -
+    :attribute_name: 'batch_version'
+    :key_type: 'RANGE'
+
+:provisioned_throughput:
+  :read_capacity_units: 10
+  :write_capacity_units:  10
