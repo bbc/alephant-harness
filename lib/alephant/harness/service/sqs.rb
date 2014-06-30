@@ -9,12 +9,14 @@ module Alephant
           @@client ||= ::AWS::SQS.new
         end
 
-        def self.create(queue_name)
-          client.queues.create queue_name
+        def self.create(queue)
+          client.queues.create /(?<name>[^\/]+)$/.match(queue)[:name]
         end
 
         def self.get(queue_name)
           client.queues.named(queue_name)
+        rescue ::AWS::SQS::Errors::NonExistentQueue
+          false
         end
 
         def self.exists?(queue_name)
