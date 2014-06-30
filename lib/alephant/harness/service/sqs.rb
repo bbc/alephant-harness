@@ -10,11 +10,11 @@ module Alephant
         end
 
         def self.create(queue)
-          client.queues.create /(?<name>[^\/]+)$/.match(queue)[:name]
+          client.queues.create queue_name(queue)
         end
 
-        def self.get(queue_name)
-          client.queues.named(queue_name)
+        def self.get(queue)
+          client.queues.named(queue_name(queue))
         rescue ::AWS::SQS::Errors::NonExistentQueue
           false
         end
@@ -26,7 +26,11 @@ module Alephant
         end
 
         def self.delete(queue_name)
-          client.queues.named(queue_name).delete
+          get(queue_name).delete
+        end
+
+        def self.queue_name(queue)
+          /(?<name>[^\/]+)$/.match(queue)[:name]
         end
 
       end
