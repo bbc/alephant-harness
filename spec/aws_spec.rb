@@ -12,8 +12,8 @@ describe Alephant::Harness::AWS do
         'AWS_SQS_PORT'            => '4568',
         'AWS_DYNAMO_DB_ENDPOINT'  => 'localhost',
         'AWS_DYNAMO_DB_PORT'      => '4570',
-        'AWS_USE_SSL'             => 'false',
-        'AWS_S3_FORCE_PATH_STYLE' => 'true',
+        'AWS_USE_SSL'             => false,
+        'AWS_S3_FORCE_PATH_STYLE' => true,
         'AWS_ACCESS_KEY_ID'       => 'access',
         'AWS_SECRET_ACCESS_KEY'   => 'secret'
       }
