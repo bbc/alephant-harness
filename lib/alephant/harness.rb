@@ -1,4 +1,5 @@
 require "alephant/harness/version"
+require "alephant/harness/setup"
 
 module Alephant
   module Harness

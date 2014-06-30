@@ -10,18 +10,19 @@ module Alephant
       def self.configure(opts = {}, env = nil)
         AWS.configure(env)
 
-        queue_name = opts[:sqs_queue_url]
-        bucket     = opts[:bucket_id]
+        queue_name = opts[:sqs_queue_url] and recreate_sqs queue_name
+        bucket     = opts[:bucket_id]     and recreate_s3 bucket
+
         tables     = {
           :lookup    => opts[:lookup_table_name],
           :sequencer => opts[:sequencer_table_name],
-        }
+        } and recreate_dynamo_db tables
 
-        recreate_sqs queue_name
+        #recreate_sqs queue_name
 
-        recreate_s3 bucket
+        #recreate_s3 bucket
 
-        recreate_dynamo_db tables
+        #recreate_dynamo_db tables
       end
 
       def self.recreate_sqs(queue_name)
@@ -51,5 +52,3 @@ module Alephant
     end
   end
 end
-
-binding.pry
