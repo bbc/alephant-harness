@@ -18,11 +18,6 @@ module Alephant
           :sequencer => opts[:sequencer_table_name],
         } and recreate_dynamo_db tables
 
-        #recreate_sqs queue_name
-
-        #recreate_s3 bucket
-
-        #recreate_dynamo_db tables
       end
 
       def self.recreate_sqs(queue_name)
