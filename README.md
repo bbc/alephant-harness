@@ -2,6 +2,8 @@
 
 Provides supporting classes for running the alephant framework locally.
 
+Alephant::Harness::Setup.configure tears down and sets up the Alephant framework's AWS resources.
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -18,8 +20,20 @@ Or install it yourself as:
 
 ## Usage
 
-Coming soon
+Add the following code to your Alephant-based project's Rakefile, with your own configuration:
 
+```ruby
+require 'alephant/harness'
+
+config = { :sqs_queue_url        => 'your-sqs-queue-url',
+           :bucket_id            => 'your-bucket-id',
+           :lookup_table_name    => 'your-lookup-table-name',
+           :sequencer_table_name => 'your-sequencer-table-name' }
+
+task :harness do
+  Alephant::Harness::Setup.configure(config, ENV)
+end
+```
 
 ## Contributing
 
