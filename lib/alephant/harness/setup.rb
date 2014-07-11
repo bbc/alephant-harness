@@ -10,10 +10,13 @@ module Alephant
       def self.configure(opts = {}, env = nil)
         AWS.configure(env)
 
-        queue_name = opts[:sqs_queue_url] and recreate_sqs queue_name
-        bucket     = opts[:bucket_id]     and recreate_s3 bucket
+        opts[:queues].each do |queue_name|
+          recreate_sqs queue_name
+        end
 
-        tables     = {
+        bucket = opts[:bucket_id] and recreate_s3 bucket
+
+        tables = {
           :lookup    => opts[:lookup_table_name],
           :sequencer => opts[:sequencer_table_name],
         } and recreate_dynamo_db tables
