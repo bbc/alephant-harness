@@ -37,6 +37,18 @@ module Alephant
           get_object(id, object_id).delete
         end
 
+        def self.bucket_exists?(bucket_id)
+          begin
+            exists = client.buckets[bucket_id].exists?
+          rescue ::AWS::S3::Errors::NoSuchKey => e
+            exists = false
+          end
+
+          exists.tap do |e|
+            yeild if e && block_given?
+          end
+        end
+
         def self.exists?(id, object_id)
           if get_object(id, object_id)
             yield
