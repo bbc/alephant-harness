@@ -10,20 +10,17 @@ module Alephant
           @@client ||= ::AWS::DynamoDB::Client::V20120810.new
         end
 
-        def self.create(table_name, schema_name)
-          schema = load_schema(schema_name).tap { |s| s[:table_name] = table_name }
+        def self.create(table_name, schema)
+          schema.tap { |s| s[:table_name] = table_name }
           client.create_table schema
         end
 
-        def self.remove(tables)
-          tables.each do |table_name|
-            begin
-              client.delete_table({ :table_name => table_name })
-            rescue Exception => e
-              #If table doesn't exist fail silently
-            end
-          end
+        def self.remove(table_name)
+          client.delete_table({ :table_name => table_name })
+        rescue Exception => e
+          #If table doesn't exist fail silently
         end
+
 
         def self.load_schema(schema_name)
           YAML::load_file(File.join([File.dirname(__FILE__), *(%w'..' * 4), 'schema', "#{schema_name}.yaml"]))
