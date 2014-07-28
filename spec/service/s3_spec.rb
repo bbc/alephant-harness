@@ -80,7 +80,6 @@ describe Alephant::Harness::Service::S3 do
     context "when bucket exists" do
       it "yields control" do
         allow(bucket).to receive(:exists?).and_return(true)
-
         expect { |b| subject.bucket_exists?(id, &b) }.to yield_control
       end
     end
@@ -88,7 +87,6 @@ describe Alephant::Harness::Service::S3 do
     context "when bucket does not exist" do
       it "does not yield control" do
         allow(bucket).to receive(:exists?).and_return(false)
-
         expect { |b| subject.bucket_exists?(id, &b) }.to_not yield_control
       end
     end
