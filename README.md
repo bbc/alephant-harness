@@ -25,10 +25,20 @@ Add the following code to your Alephant-based project's Rakefile, with your own 
 ```ruby
 require 'alephant/harness'
 
-config = { :sqs_queue_url        => 'your-sqs-queue-url',
-           :bucket_id            => 'your-bucket-id',
-           :lookup_table_name    => 'your-lookup-table-name',
-           :sequencer_table_name => 'your-sequencer-table-name' }
+bbc_config = BBC::Cosmos::Config.app
+
+config = {
+  :tables => [
+    { :name => bbc_config[:lookup_table_name], :schema => 'lookup' },
+	{ :name => bbc_config[:sequencer_table_name], :schema => 'sequencer' }
+  ],
+  :queues => [
+    bbc_config[:sqs_queue_name]
+  ],
+  :buckets => [
+    bbc_config[:bucket_id]
+  ]
+}
 
 task :harness do
   Alephant::Harness::Setup.configure(config, ENV)
