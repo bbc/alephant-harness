@@ -45,7 +45,7 @@ module Alephant
           end
 
           exists.tap do |e|
-            yeild if e && block_given?
+            yield if e && block_given?
           end
         end
 

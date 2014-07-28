@@ -71,6 +71,27 @@ describe Alephant::Harness::Service::S3 do
     end
   end
 
+  describe ".bucket_exists?" do
+    before(:each) do
+      allow_any_instance_of(AWS::S3).to receive(:buckets).and_return(buckets)
+      allow(buckets).to receive(:[]).with(id).and_return(bucket)
+    end
+
+    context "when bucket exists" do
+      it "yields control" do
+        allow(bucket).to receive(:exists?).and_return(true)
+        expect { |b| subject.bucket_exists?(id, &b) }.to yield_control
+      end
+    end
+
+    context "when bucket does not exist" do
+      it "does not yield control" do
+        allow(bucket).to receive(:exists?).and_return(false)
+        expect { |b| subject.bucket_exists?(id, &b) }.to_not yield_control
+      end
+    end
+  end
+
   describe ".exists?" do
     context "when queue exists" do
       it "yields control" do
