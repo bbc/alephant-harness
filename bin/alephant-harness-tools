@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'pathname'
+
+$LOAD_PATH.unshift(
+  (Pathname.new(__FILE__).dirname.parent + 'lib').realdirpath
+)
+
+require 'alephant/harness/tools/app'
+include Alephant::Harness::Tools
+
+App.start
