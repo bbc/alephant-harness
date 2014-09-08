@@ -18,8 +18,8 @@ module Alephant
             error '--base directory set does not exist.' unless Validation.base_exist? options[:base]
           end
 
-          method_option :seq_num, :type => :numeric, :default => nil, :desc => 'Sequence number for message.'
-          method_option :json_path, :type => :string, :default => nil, :desc => 'Path to JSON file containing message.'
+          method_option :seq_num, :type => :numeric, :default => nil, :aliases => '-s', :desc => 'Sequence number for message.'
+          method_option :json_path, :type => :string, :default => nil, :aliases => '-j', :desc => 'Path to JSON file containing message.'
           desc 'add_message', 'Adds a message to renderer queue.'
           def add_message
             component = Component.new(options[:base]).id
@@ -31,6 +31,13 @@ module Alephant
             })
           end
 
+          method_option :component, :type => :string, :required => true, :aliases => '-c', :desc => 'Switch renderer to this component.'
+          desc 'change_component', 'Changes the component currently being used by a local renderer.'
+          def change_component
+            validate_before_change_component
+            Component.new(options[:base]).change options[:component]
+          end
+
           private
 
           def validate_before_add_message(component)
@@ -40,6 +47,10 @@ module Alephant
               error "Can't find component '#{component}' in renderer repo." unless Validation.component_exist? component, options[:base]
               error "Can't find 'responsive.json' fixture for component." unless Validation.fixture_exist? component, options[:base]
             end
+          end
+
+          def validate_before_change_component
+            error "Can't find component '#{options[:component]}' in renderer repo." unless Validation.component_exist? options[:component], options[:base]
           end
         end
       end
