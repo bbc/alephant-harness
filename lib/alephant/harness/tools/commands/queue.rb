@@ -11,7 +11,7 @@ module Alephant
           include Thor::Actions
           include Alephant::Harness::Tools::Helper
 
-          class_option :base, :type => :string, :required => true, :desc => "The base path to your alephant-renderer repo."
+          class_option :base, :type => :string, :default => ENV['RENDERER_PATH'], :required => true, :desc => "The base path to your alephant-renderer repo."
 
           def initialize(args = [], local_options = {}, thor_config = {})
             super args, local_options, thor_config
