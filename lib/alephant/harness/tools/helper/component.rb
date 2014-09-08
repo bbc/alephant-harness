@@ -5,8 +5,19 @@ module Alephant
         class Component
           attr_accessor :id
 
-          def initialize
-            @id = 'scot_ref_summary' # TODO: Replace with app.json value
+          def initialize(base)
+            @base = base
+            @id   = read['configuration']['component_id']
+          end
+
+          private
+
+          def path
+            "#{@base}/src/config/development/app.json"
+          end
+
+          def read
+            JSON.parse File.read(path)
           end
         end
       end
