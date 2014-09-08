@@ -54,8 +54,13 @@ module Alephant
 
           def seq_num
             seq = Sequence.new @component
-            seq.reset @options[:seq_num] if @options[:seq_num]
-            seq.number
+            if @options[:seq_num]
+              seq.reset @options[:seq_num]
+              @options[:seq_num]
+            else
+              seq.update
+              seq.number
+            end
           end
         end
       end

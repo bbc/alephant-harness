@@ -7,6 +7,9 @@ module Alephant
 
           def initialize(component)
             @component = component
+          end
+
+          def update
             exists? ? read_from_file : create_file
           end
 
