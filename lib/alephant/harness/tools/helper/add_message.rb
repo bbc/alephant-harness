@@ -15,7 +15,7 @@ module Alephant
           private
 
           def configure_aws
-            AWS.config(
+            ::AWS.config(
               access_key_id: read_env_config['AWS_ACCESS_KEY_ID'],
               secret_access_key: read_env_config['AWS_SECRET_ACCESS_KEY']
             )
@@ -33,11 +33,11 @@ module Alephant
           end
 
           def queue
-            AWS::SQS.new.queues.named read_app_config['configuration']['sqs_queue_name']
+            ::AWS::SQS.new.queues.named read_app_config['configuration']['sqs_queue_name']
           end
 
           def read_app_config
-            JSON.parse File.read("#{@options[:base]}/src/config/development/app.json")
+            JSON.parse File.read "#{@options[:base]}/src/config/development/app.json"
           end
 
           def read_env_config

@@ -7,9 +7,8 @@ describe Alephant::Harness::Tools::Helper::Component do
   let(:component) { 'test' }
   let(:base_path) { 'spec/fixtures' }
 
-
   before(:each) do
-    allow_any_instance_of(Thor::Shell::Basic).to receive(:say).and_return(nil)
+    allow_any_instance_of(Thor::Shell::Basic).to receive(:say)
   end
 
   describe '.new' do
@@ -20,7 +19,12 @@ describe Alephant::Harness::Tools::Helper::Component do
 
   describe '.change' do
     let(:new_component) { 'new_test' }
-    let(:app_json) { JSON.parse File.read "#{base_path}/src/config/development/app.json" }
+    let(:app_json) { JSON.parse File.read app_json_path }
+    let(:app_json_path) { "#{base_path}/src/config/development/app.json" }
+
+    before do
+      allow(File).to receive(:open).once.with(app_json_path, 'w').once
+    end
 
     it 'writes new component ID' do
       hash = app_json.tap do |h|
@@ -28,9 +32,8 @@ describe Alephant::Harness::Tools::Helper::Component do
         h['configuration']['renderer_id'] = new_component
       end
 
-      allow(subject).to receive(:write).once.with(hash).and_return(nil)
+      expect(subject).to receive(:write).with(hash)
       subject.change new_component
-      expect(subject).to have_received(:write).with(hash)
     end
   end
 
