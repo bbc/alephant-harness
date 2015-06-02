@@ -6,8 +6,8 @@ require 'alephant/harness/version'
 Gem::Specification.new do |spec|
   spec.name          = "alephant-harness"
   spec.version       = Alephant::Harness::VERSION
-  spec.authors       = ["Steven Jack"]
-  spec.email         = ["stevenmajack@gmail.com"]
+  spec.authors       = ["BBC News"]
+  spec.email         = ["FutureMediaNewsRubyGems@bbc.co.uk"]
   spec.summary       = %q{Stuff}
   spec.description   = %q{More Stuff}
   spec.homepage      = ""
