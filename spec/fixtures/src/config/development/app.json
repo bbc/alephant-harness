@@ -1,0 +1,7 @@
+{
+  "configuration": {
+    "component_id": "test",
+    "renderer_id": "test",
+    "sqs_queue_name": "test"
+  }
+}
