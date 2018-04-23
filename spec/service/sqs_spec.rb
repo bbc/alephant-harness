@@ -3,43 +3,33 @@ require 'spec_helper'
 describe Alephant::Harness::Service::SQS do
 
   let(:queue_name) { "queue" }
-  let(:queues) { double("AWS::SQS::QueueCollection") }
-  let(:queue)  { double("AWS::SQS::Queue") }
+  let(:fake_client) { Aws::SQS::Client.new(stub_responses: true) }
+
+  before do
+    allow(subject).to receive(:client).and_return(fake_client)
+  end
 
   describe ".create" do
-    it "creates a new queue" do
-      allow(queues).to receive(:create).with(queue_name)
+    it "creates a Aws::SQS::Types::CreateQueueResult" do
+      fake_client.stub_data(:create_queue)
 
-      expect_any_instance_of(AWS::SQS).to receive(:queues).and_return(queues)
-      subject.create queue_name
+      expect(subject.create(queue_name).data).to be_a(Aws::SQS::Types::CreateQueueResult)
     end
   end
 
   describe ".delete" do
     it "deletes a queue" do
-      allow_any_instance_of(AWS::SQS).to receive(:queues).and_return(queues)
+      fake_client.stub_data(:get_queue_url, { queue_url: 'http://sqs.aws.myqueue/id' })
+      fake_client.stub_data(:delete_queue)
 
-      allow(queues).to receive(:named).and_return(queue)
-
-      expect(queue).to receive(:delete)
-      subject.delete queue_name
-    end
-  end
-
-  describe ".get" do
-    it "gets a queue" do
-      allow_any_instance_of(AWS::SQS).to receive(:queues).and_return(queues)
-      allow(queues).to receive(:named).with(queue_name).and_return(queue)
-
-      expect(subject.get queue_name).to eq(queue)
+      expect(subject.delete(queue_name).data).to be_a(Aws::EmptyStructure)
     end
   end
 
   describe ".exists?" do
     context "when queue exists" do
       it "yields control" do
-        allow_any_instance_of(AWS::SQS).to receive(:queues).and_return(queues)
-        allow(queues).to receive(:named).with(queue_name).and_return(queue)
+        fake_client.stub_data(:get_queue_url, { queue_url: 'http://sqs.aws.myqueue/id' })
 
         expect { |b| subject.exists?(queue_name, &b) }.to yield_control
       end
@@ -47,12 +37,10 @@ describe Alephant::Harness::Service::SQS do
 
     context "when queue does not exist" do
       it "does not yield control" do
-        allow_any_instance_of(AWS::SQS).to receive(:queues).and_return(queues)
-        allow(queues).to receive(:named).with(queue_name).and_return(nil)
+        fake_client.stub_responses(:get_queue_url, 'NonExistentQueue')
 
         expect { |b| subject.exists?(queue_name, &b) }.to_not yield_control
       end
     end
   end
-
 end
