@@ -6,4 +6,6 @@ require 'alephant/harness/aws'
 require 'alephant/harness/service/dynamo_db'
 require 'alephant/harness/service/s3'
 require 'alephant/harness/service/sqs'
-require 'aws-sdk'
+require "aws-sdk-dynamodb"
+require "aws-sdk-s3"
+require "aws-sdk-sqs"

@@ -13,7 +13,7 @@ module Alephant
       end
 
       def self.configure(opts = {}, env = nil)
-        AWS.configure(env)
+        AWS.config = env
 
         unless opts[:queues].nil?
           logger.info "Adding #{opts[:queues].length} queue(s)"
